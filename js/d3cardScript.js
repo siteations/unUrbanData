@@ -51,13 +51,13 @@ cardsSvg.forEach((svgP) => { //add one visualization per 'card'
 
 	//non-transition labels for orientation
 	let topLabel = gLabel.append("text")
-		.text('total population')
+		.text('total population, thousands')
 		.attr("dy", hRel *.225)
 		.attr("dx", halfRel)
 		.attr('class', 'labelText Grey');
 
 	let bottomLabel = gLabel.append("text")
-		.text('urban population growth since 1990')
+		.text('urban population growth since 1990, thousands')
 		.attr("dy", hRel *.985)
 		.attr("dx", halfRel)
 		.attr('class', 'labelText Grey');
