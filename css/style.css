@@ -1,0 +1,157 @@
+/* FONT AND BODY ADJ ON BOOTSTRAP */
+
+.npadding {
+	padding: 0px;
+}
+
+/* COLORS / SWATCHES / SHADOWS */
+
+.greybk {
+	background-color: #ececec;
+}
+
+.orangebktop {
+	background-color: #fff;
+	border-bottom: solid 4px #f7a51e;
+}
+
+.orangebkbottom {
+	background-color: #fff;
+	border-top: solid 4px #f7a51e;
+}
+
+.white {
+	color: #fff;
+	fill: #fff;
+}
+
+.WhiteSt {
+	stroke: #fff;
+	stroke-width: 3px;
+}
+
+.WhiteOp{
+	fill: #fff;
+	opacity: .5;
+}
+
+.Grey {
+	fill: #949494;
+	color: #949494;
+	mix-blend-mode: multiply;
+}
+
+.OrangeYellow {
+	fill: #f7c91e;
+	color: #f7c91e;
+}
+
+.OrangeText {
+	color: #f7a51e;
+	fill: #f7a51e;
+}
+
+.Orange {
+	fill: #f7a51e;
+	mix-blend-mode: overlay;
+}
+
+.OrangeOrange {
+	fill: #f7811e;
+	color: #f7811e;
+}
+
+.OrangeRed {
+	fill: #f75d1e;
+	color: #f75d1e;
+}
+
+.smShadow {
+	-moz-box-shadow: 0 0 3px #808080;
+  -webkit-box-shadow: 0 0 3px #808080;
+	box-shadow: 0 0 3px #808080;
+}
+
+.inShadow {
+	-moz-box-shadow: inset 0 0 2px #808080;
+  -webkit-box-shadow: inset 0 0 2px #808080;
+	box-shadow: inset 0 0 2px #808080;
+}
+
+/* CORE DIV AREAS */
+
+.header {
+	width:100vw;
+	min-height: 10vh;
+}
+
+.footer {
+	width:100vw;
+	min-height: 15vh;
+}
+
+.cardOut {
+	padding:10px;
+}
+
+.card {
+	min-height: 65vh;
+	background-color: #fff;
+	border: 1px #808080;
+	border-radius: 5px;
+	margin:10px 3px 0px 3px;
+	padding:10px;
+}
+
+/* COMPONENTS AND SUB-COMPONENTS */
+
+.slider {
+	padding:5px;
+	width: 80% !important;
+	margin: auto;
+	color: #808080;
+}
+
+.svgPanes {
+	min-height: 275px;
+	min-width: 250px;
+}
+
+.labelText {
+	text-anchor: middle;
+	font-size: .65em;
+}
+
+.labelH3 {
+	text-anchor: middle;
+	font-size: 1em;
+}
+
+.labelH2 {
+	text-anchor: middle;
+	font-size: 2em;
+	font-weight: bold;
+}
+
+.labelH1 {
+	text-anchor: middle;
+	font-size: 2.5em;
+	font-weight: bold;
+	text-shadow: white 5px;
+}
+
+.labelH1L {
+	text-anchor: middle;
+	font-size: 3em;
+	font-weight: bold;
+	text-decoration: underline;
+}
+/* FLEX OPTIONS */
+
+.flex {
+	display: inline-flex;
+}
+
+.between {
+	align-content: space-between;
+}
