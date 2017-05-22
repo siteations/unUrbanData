@@ -7,17 +7,14 @@ const area = ['Africa', 'Latin-America', 'Asia'];
 
 const cards = $( ".cardOut" ).toArray();
 
-cards.forEach((card, i) => {
-	let img = coreData[area[i]].img;
+const slider = (Areas) => {
 
-	let content =`<div class="card smShadow" id="${area[i]}">
-		<h2 class="OrangeOrange">${area[i]}</h2>
-			<div class="hidden-sm hidden-xs">
+	return `<div class="hidden-sm hidden-xs">
 				<div class="slider">
 					<div class="col-xs-4 text-left npadding"><small>1990</small></div>
 					<div class="col-xs-4 text-center npadding"><small>2014</small></div>
 					<div class="col-xs-4 text-right npadding"><small>2050</small></div>
-					<input type="range" class="slider" id="${area[i]}year" max="3" min="1" step="1" list="steplist" value="1" />
+					<input type="range" class="slider" id="${Areas}year" max="3" min="1" step="1" list="steplist" value="1" />
 						<datalist id="steplist">
 						    <option>1</option>
 						    <option>2</option>
@@ -27,20 +24,28 @@ cards.forEach((card, i) => {
 		</div>
 		<div class="hidden-md hidden-lg">
 			<div class="slider">
-					<div class="col-xs-4 text-left npadding btn btn-default btn-sm ${area[i]}altB">1990</div>
-					<div class="col-xs-4 text-center npadding btn btn-default btn-sm ${area[i]}altB">2014</div>
-					<div class="col-xs-4 text-right npadding btn btn-default btn-sm ${area[i]}altB">2050</div>
+					<div class="col-xs-4 text-left npadding btn btn-default btn-sm ${Areas}altB">1990</div>
+					<div class="col-xs-4 text-center npadding btn btn-default btn-sm ${Areas}altB">2014</div>
+					<div class="col-xs-4 text-right npadding btn btn-default btn-sm ${Areas}altB">2050</div>
 			</div>
-		</div>
-		<svg id="${area[i]}Core" class="svgPanes inShadow" viewBox="0 0 300 330">
+		</div>`
+};
+
+cards.forEach((card, i) => {
+	let img = coreData[area[i]].img;
+
+	let content =`<div class="card smShadow" id="${area[i]}">
+		<h2 class="OrangeOrange">${area[i]}</h2>`
+
+	let svgArea = `<svg id="${area[i]}Core" class="svgPanes inShadow" viewBox="0 0 300 330">
 			<rect stroke="lightgrey" fill="black" fill-opacity=".02" x="0" y="0" width="300" height="330" />
 			<image xlink:href="${img}" x="0" y="15" width="300" height="300" />
 		</svg>
 		<p><small>mouse-over for <span class="OrangeText">urban</span> & <span class="Grey">rural</span> percentages</small></p>
-		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#detailModal" data-whatever="@mdo">Click for Country-Level Details</button>
+		<button type="button" class="btn btn-default btn-sm modal-btn" id="${area[i]}modal-btn" data-toggle="modal" data-target="#detailModal" data-whatever="${area[i]}">Click for Country-Level Details</button>
 	</div>`;
 
-	card.innerHTML = content;
+	card.innerHTML = content+slider(area[i])+svgArea;
 
 })
 

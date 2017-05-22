@@ -28,23 +28,31 @@ const coreData = {
 };
 
 const allTotals=[];
+const afrTotals=[];
+const afrUrbTotals=[];
 
-for (areas in coreData){
-	//0 index for opening transition from nothing
-	 coreData[areas].year.unshift(0), coreData[areas].rural.unshift(0), coreData[areas].urban.unshift(0), coreData[areas].percent.unshift(0);
+function arrUpdate (coreData, bool) {
 
-	let total1990 = coreData[areas].rural[1] + coreData[areas].urban[1];
-	let total2014 = coreData[areas].rural[2] + coreData[areas].urban[2];
-	let total2050 = coreData[areas].rural[3] + coreData[areas].urban[3];
+	for (areas in coreData){
+		//0 index for opening transition from nothing
+		 coreData[areas].year.unshift(0), coreData[areas].rural.unshift(0), coreData[areas].urban.unshift(0), coreData[areas].percent.unshift(0);
 
-	coreData[areas].total = [0, total1990, total2014, total2050];
+		let total1990 = +coreData[areas].rural[1] + +coreData[areas].urban[1];
+		let total2014 = +coreData[areas].rural[2] + +coreData[areas].urban[2];
+		let total2050 = +coreData[areas].rural[3] + +coreData[areas].urban[3];
 
-	allTotals.push(...coreData[areas].total);
-}
+		coreData[areas].total = [0, total1990, total2014, total2050];
 
-const mapMax=Math.max(...allTotals);
-const rMax=80;
-const tranRad = rMax/mapMax;
+		if (bool) {allTotals.push(...coreData[areas].total)} else { afrTotals.push(...coreData[areas].total); afrUrbTotals.push(...coreData[areas].urban) };
+	};
+
+};
+
+arrUpdate(coreData, true);
+arrUpdate(africaData);
+
+const mapMax=Math.max(...allTotals), rMax=80, tranRad = rMax/mapMax;
+const afrMax = Math.max(...afrTotals), afrUrbMax = Math.max(...afrUrbTotals);
 
 
 

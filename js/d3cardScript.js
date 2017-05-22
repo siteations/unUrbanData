@@ -108,7 +108,6 @@ cardsSvg.forEach((svgP) => { //add one visualization per 'card'
 			index0=index;
 	 		index = +adj[year]; //shift index for update context
 
-	 		console.log(index);
 	 		update();
 
 	});
