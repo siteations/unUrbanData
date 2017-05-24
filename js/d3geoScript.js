@@ -3,18 +3,20 @@ $('.modal-btn').on('click', event => { //would filter if workings with all three
 		//basic reformating of generic modal
 		$('#futureModalLabel')[0].innerHTML = "<span class='OrangeOrange'>Country-by-Country Urban Growth in Africa</span>";
 		$('.modal-header').find( "h6" )[0].innerText = '';
+		let mWidth = $(this).innerWidth(), sq, sqw, sqh;
 
-		//modal ratio 10:7 on full screen, on mobile 1:2...
-		let mWidth = Math.floor(this.innerWidth*.7), sq,sqw, sqh;
-		 if (mWidth>768){
-		 		sq=Math.floor(.55*mWidth), sqw = sq/2, sqh = sq;
-		 } else if (mWidth<768){
-		 		sq=Math.floor(mWidth/.7*.8), sqw=sq, sqh=sq;
+		if (mWidth>768){
+		 		sq=Math.floor(mWidth*.7*.6), sqw = sq/2, sqh = sqw;
+		 } else if (mWidth<768 && mWidth>480){
+		 		sq=Math.floor(mWidth*.7*.95), sqw=sq, sqh=sqw;
+		 } else if (mWidth<480){
+		 		sq=Math.floor(mWidth*.9), sqw=sq, sqh=sq*.66;
 		 }
+		 console.log(mWidth, sq, sqw, sqh);
 
 		$('.modal-body')[0].innerHTML = `<div class="row">
-			<div class="col-sm-8 col-xs-12 text-center">${slider('AfricaAll')}</div>
-				<div class="col-xs-4 col-xs-12 text-center Grey">
+			<div class="col-lg-8 text-center">${slider('AfricaAll')}</div>
+				<div class="col-lg-4 text-center Grey">
 					<h4>Urban Population, % of Total</h4>
 					<p><small> mouse-over for country stats ; click for summary at side</small></p>
 					<!--show: <button class="datatype btn btn-default btn-sm" value="total">total pop.</button>
@@ -23,14 +25,14 @@ $('.modal-btn').on('click', event => { //would filter if workings with all three
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm-8 col-xs-12 text-center">
+				<div class="col-lg-8 text-center" >
 
-					<svg id='AfricaMap' width=${sq} height=${sq} viewBox = "0 0 ${sq} ${sq}"></svg>
+					<svg id='AfricaMap' width=${sq} height=${sq} viewBox="0 0 ${sq} ${sq}"></svg>
 				</div>
-				<div class="col-xs-4 col-xs-12 text-center">
-					<p class="Grey"><small>responsive 'mobile' map to be added, optimized for screens>768px wide</small></p>
+				<div class="col-lg-4 text-center">
+					<p class="Grey"><small>responsive 'mobile' map to be optimized, best on screens>768px wide</small></p>
 					<h2 class="OrangeOrange" id="countryname"></h2>
-					<svg id='AfricaCirc' width=${sqw} height=${sqh} viewBox = "0 0 ${sqw} ${sqh}"></svg>
+					<svg id='AfricaCirc' width=${sqw} height=${sqh} viewBox="0 0 ${sqw} ${sqh}"></svg>
 				</div>
 			</div>`;
 
@@ -58,8 +60,12 @@ function addMap(){
 
 		var category = 'percent'; //add buttons to shift categories
 
+		//[40, 5] at fullscreen 604 or  [80+,-10] at mobile or 360, so 604-378=244
+		let relW = (244-(w-378))/244;
+		let lat = 40 + (40*relW), long = 5 - (18*relW);
+
 		var projection = d3.geoEquirectangular()
-		  .center([50, 5]) // the question is how to set this in ratio to window size, responsive sticking pt.
+		  .center([lat, long]) // the question is how to set this in ratio to window size, responsive sticking pt.
 		  .scale(w*.73);
 
   	var path = d3.geoPath().projection(projection);
@@ -223,7 +229,7 @@ function clickSideBar(d,i){
 		var sizes2= {
 			hRel:($('#AfricaCirc')[0].clientHeight-40),
 			wRel:($('#AfricaCirc')[0].clientWidth-40)/2,
-			halfRel:($('#AfricaCirc')[0].clientWidth-40)/4,
+			halfRel:$('#AfricaCirc')[0].clientWidth/2,
 			offset: 20,
 		}
 	}

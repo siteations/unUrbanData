@@ -1,4 +1,7 @@
 /* FONT AND BODY ADJ ON BOOTSTRAP */
+body {
+	box-sizing: border-box;
+}
 
 .npadding {
 	padding: 0px;
@@ -121,6 +124,15 @@
 .svgPanes {
 	min-height: 275px;
 	min-width: 250px;
+}
+
+#svg1 {
+	display:block;
+}
+
+.svgModal1 {
+	min-width: 100%;
+	min-height: 60vh;
 }
 
 .labelText {

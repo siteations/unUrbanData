@@ -5968,7 +5968,19 @@ button.close {
   height: 50px;
   overflow: scroll;
 }
-@media (min-width: 768px) {
+
+@media (min-width: 480px) {
+  .modal-dialog {
+    width: 90vw;
+    margin: 20px auto;
+  }
+  .modal-content {
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+  }
+
+}
+@media (min-width: 768px){
   .modal-dialog {
     width: 70vw;
     margin: 30px auto;
