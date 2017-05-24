@@ -1,3 +1,5 @@
+NOTE: I'm archiving the 4hr exercise to the branch 'exercise4hr' and moving/merging geographies to the master.
+
 BIG OVERVIEW: My general goal was to allow, on a full-sized screen, for comparison between regions and give users the ability to scroll between different dates. I went with a ‘card’ or ‘panel’ based layout to also enable mobile reading of a single region at a time.  
 
 GENERAL TOOLS/STRUCTURE: My impulse, with repeated components, is to ‘react-ify’ the structure into JSX, but given the basic ‘read-only’ relationship with the UN data and absence of more complex store needs. . . I opted for basic HTML/CSS with bootstrap, jQuery and d3.js. The later two provide enough selection options to iterative over the ‘cards,’ filling them with basic html and svg visualization elements. (Second, if I’m being honest, not using react means I don’t have to re-engineering the management of transitions via ‘react-transition-group’. It seems excessive at this scale, but would make sense if this were a much larger single-page app.)
