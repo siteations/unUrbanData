@@ -9,15 +9,17 @@ $('.modal-btn').on('click', event => { //would filter if workings with all three
 		 if (mWidth>768){
 		 		sq=Math.floor(.55*mWidth), sqw = sq/2, sqh = sq;
 		 } else if (mWidth<768){
-		 		sq=Math.floor(mWidth/.7*.8), sqw=sq, sqh=sq/2;
+		 		sq=Math.floor(mWidth/.7*.8), sqw=sq, sqh=sq;
 		 }
 
 		$('.modal-body')[0].innerHTML = `<div class="row">
 			<div class="col-sm-8 col-xs-12 text-center">${slider('AfricaAll')}</div>
 				<div class="col-xs-4 col-xs-12 text-center Grey">
-					show: <button class="datatype btn btn-default btn-sm" value="total">total pop.</button>
+					<h4>Urban Population, % of Total</h4>
+					<p><small> mouse-over for country stats ; click for summary at side</small></p>
+					<!--show: <button class="datatype btn btn-default btn-sm" value="total">total pop.</button>
 					<button class="datatype btn btn-default btn-sm" value="urban">urban pop.</button>
-					<button class="datatype btn btn-default btn-sm" value="percent">% urban</button>
+					<button class="datatype btn btn-default btn-sm" value="percent">% urban</button>-->
 				</div>
 			</div>
 			<div class="row">
@@ -26,8 +28,8 @@ $('.modal-btn').on('click', event => { //would filter if workings with all three
 					<svg id='AfricaMap' width=${sq} height=${sq} viewBox = "0 0 ${sq} ${sq}"></svg>
 				</div>
 				<div class="col-xs-4 col-xs-12 text-center">
-					<p>likely need a different color scale for totals/population vs. percentages<p>
-					<p>stacked donut charts here in next step, triggered on click on country</p>
+					<p class="Grey"><small>responsive 'mobile' map to be added, optimized for screens>768px wide</small></p>
+					<h2 class="OrangeOrange" id="countryname"></h2>
 					<svg id='AfricaCirc' width=${sqw} height=${sqh} viewBox = "0 0 ${sqw} ${sqh}"></svg>
 				</div>
 			</div>`;
@@ -46,8 +48,9 @@ $('.modal-btn').on('click', event => { //would filter if workings with all three
 function addMap(){
 
 	var svgGeo = d3.select('#AfricaMap'),
-		gGeo = svgGeo.append('g'),
+		gGeo = svgGeo.append('g').attr('id','gGeo'),
 		gGeoLabel = svgGeo.append('g'),
+		gOutline = svgGeo.append('g').attr('id','gOut'),
 
 		w = svgGeo.attr('width'),
 		h = w,
@@ -87,16 +90,19 @@ function addMap(){
 
 			//joined and ready for visualization
 			var yrVal = $('#AfricaAllyear')[0].value; //add update function at end for change there
+			//console.log(yrVal);
 
 			gGeo.selectAll("path")
 				  .data(africaPaths)
 				  .enter()
 				  .append("path")
 				  .attr("d", path)
+				  .attr('id', (d,i)=>`path${africaData[i].name.split(' ')[0]}`)
 				  .attr("fill", (d,i)=>colorVar(d,i,category,yrVal))
 				  .attr('class', 'WhiteSt')
 				  .on("mouseover", (d,i)=>mouseOn(d,i,gGeoLabel, category, yrVal, labelpos))
-				  .on("mouseout", (d,i)=>mouseOff(gGeoLabel));
+				  .on("mouseout", (d,i)=>mouseOff(gGeoLabel))
+				  .on('click', function(d,i){ return clickSideBar(d,i)});
 
 
 //-------------triggered transitions for year/category selections------------
@@ -135,8 +141,6 @@ function addMap(){
 
 		});
 
-
-
 }
 
 
@@ -146,21 +150,25 @@ function colorVar(d,i,category,yrVal){
 	if (category==='percent'){
   			var t = +africaData[i][category][yrVal]/100;
   		} else if (category==='total'){
-  			var t = +africaData[i][category][yrVal]/afrMax;
+  			var t = +africaData[i][category][yrVal]/afrMax+.2;
   		} else {
-  			var t = +africaData[i][category][yrVal]/afrUrbMax;
+  			var t = (+africaData[i][category][yrVal] - +africaData[i][category][1])/afrUrbMax + .2;
   		};
   		return d3.interpolateYlOrRd(t);
 }
 
 function mouseOn(d,i,layer, category, yrVal, labelpos){
 	let txt;
+	let val;
 	if (category==='percent'){
 		txt = 'percent urban population';
+		val = africaData[i][category][yrVal]+ ' %';
 	} else if (category==='total'){
 		txt = 'total population, thousands';
+		val = africaData[i][category][yrVal].toLocaleString();
 	} else {
-		txt = 'total urban population, thousands';
+		txt = 'total increase in urban populations since 1990, thousands';
+		val = (+africaData[i][category][yrVal] - +africaData[i][category][1]).toLocaleString();
 	};
 
 	layer.selectAll('text').remove();
@@ -180,7 +188,7 @@ function mouseOn(d,i,layer, category, yrVal, labelpos){
 		.attr('y', labelpos[1]);
 
 	layer.append("text")
-		.text(africaData[i][category][yrVal]) //country specific
+		.text(val) //country specific
 		.attr('class', 'OrangeOrange H2 text-left')
 		.attr('id', 'spectext')
 		.attr('x', labelpos[0])
@@ -189,4 +197,43 @@ function mouseOn(d,i,layer, category, yrVal, labelpos){
 
 function mouseOff(layer){
 	layer.selectAll('text').remove();
+}
+
+
+function clickSideBar(d,i){
+	var row=africaData[i];
+	var site = 'AfricaCirc';
+	var index0 = 0, index = $('#AfricaAllyear')[0].value;
+	var key2 ='AfricaAll';
+	$('#countryname')[0].innerText = africaData[i].name;
+
+	d3.select('#path2').remove();
+	let pathway = d3.select(`#path${africaData[i].name.split(' ')[0]}`).attr('d');
+	d3.select('#gOut').append('path').attr('d', pathway).attr('fill','none').attr('class', 'WhiteStselect').attr('id', 'path2');
+	//correct for selection with names with spaces... add a hook.
+
+	if ($('#AfricaCirc')[0].clientWidth<300){
+		var sizes2= {
+			hRel:($('#AfricaCirc')[0].clientHeight-40)/2*1.25,
+			wRel:$('#AfricaCirc')[0].clientWidth-40,
+			halfRel:$('#AfricaCirc')[0].clientWidth/2,
+			offset: 20,
+		}
+	} else {
+		var sizes2= {
+			hRel:($('#AfricaCirc')[0].clientHeight-40),
+			wRel:($('#AfricaCirc')[0].clientWidth-40)/2,
+			halfRel:($('#AfricaCirc')[0].clientWidth-40)/4,
+			offset: 20,
+		}
+	}
+
+	const rMax2=sizes2.wRel/2-10, tranRad2 = rMax2/afrMax;
+
+	let children = $('#AfricaCirc').empty();
+
+	addArcs(site, key2, row, index0, index, sizes2, null, tranRad2);
+
+
+
 }

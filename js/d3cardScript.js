@@ -5,31 +5,44 @@ const cardsSvg = $( ".svgPanes" ).toArray(); // basic addition of each svg graph
 
 cardsSvg.forEach((svgP) => { //add one visualization per 'card'
 
-	let key=svgP.id.replace('Core', '');
-	let data=coreData[key];
-	let index0 = 0, index = 1;
+	var key=svgP.id.replace('Core', '');
+	var data=coreData[key];
+	var index0 = 0, index = 1;
 
-	let hRel=330;
-	let wRel=300;
-	let halfRel=wRel/2;
+	var sizes= {
+		hRel:330,
+		wRel:300,
+		halfRel:330/2,
+		offset: 40,
+}
 
-	const offset=40;
+	var main = true;
 
-	// Get the SVG container, and apply a transform such that the origin to arc center, keep labels at original location
-	var svg = d3.select(`#${svgP.id}`),
+	addArcs(svgP.id, key, data, index0, index, sizes, main, tranRad);
+
+
+})
+
+//------------------------------BASE GEOMETRY-------------------------------------
+
+function addArcs(element, key, data, index0, index, sizes, main, tranRad){
+	var {hRel, wRel, halfRel, offset} = sizes;
+
+	var svg = d3.select(`#${element}`),
 			g = svg.append("g").attr("transform", "translate(" + halfRel + "," + hRel/2 + ")"),
 			gLabel = svg.append("g"),
 			mLabel = svg.append("g");
 
 			mLabel.attr('id', key+'labels');
 
-//------------------------------BASE GEOMETRY-------------------------------------
-
 	//Add the background underlay, 50% white to reduce graphic impact of geography, change datum according to slider position
+
+	if (main){
 	var underlay = g.append("path")
 		.datum({endAngle: tau, outerRadius: data.total[index0]*tranRad+offset, innerRadius: data.total[index0]*tranRad})
 		.attr("class", "WhiteOp WhiteSt")
 		.attr("d", arc);
+	}
 
 	// Add the background arc in grey.
 	var background = g.append("path")
@@ -47,7 +60,8 @@ cardsSvg.forEach((svgP) => { //add one visualization per 'card'
 		.on("mouseover", function(d){ mouseOverLabel(d, 'urban') })
 		.on("mouseout", function(d){ mouseOutClear(d) });
 
-//------------------------------BASE LABELS------------------------------------
+
+	//------------------------------BASE LABELS------------------------------------
 
 	//non-transition labels for orientation
 	let topLabel = gLabel.append("text")
@@ -97,6 +111,7 @@ cardsSvg.forEach((svgP) => { //add one visualization per 'card'
 			index0=index;
 	 		index = +event.target.value; //shift index for update context
 
+	 		console.log(key);
 	 		update();
 
 	});
@@ -112,12 +127,13 @@ cardsSvg.forEach((svgP) => { //add one visualization per 'card'
 
 	});
 
-
 //----------------------function holding all transitions-------------------------
 	function update(){
 
+		if (main){
 		underlay.transition().duration(750)
 				.attrTween("d", arcTween(tau, data.total[index]*tranRad+offset, null));
+			}
 
 		background.transition().duration(750)
 				.attrTween("d", arcTween(tau, data.total[index]*tranRad+offset, 100-data.percent[index]));
@@ -188,6 +204,4 @@ cardsSvg.forEach((svgP) => { //add one visualization per 'card'
 		d3.select(`#labelM`).remove();
 	}
 
-
-})
-
+}// ends the adds arcs function.

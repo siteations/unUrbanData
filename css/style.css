@@ -30,6 +30,12 @@
 	stroke-width: 3px;
 }
 
+.WhiteStselect {
+	stroke: #949494;
+	stroke-width: 5px;
+	stroke-linecap: round;
+}
+
 .WhiteOp{
 	fill: #fff;
 	opacity: .5;

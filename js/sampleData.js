@@ -29,7 +29,7 @@ const coreData = {
 
 const allTotals=[];
 const afrTotals=[];
-const afrUrbTotals=[];
+const afrUrbDiffs=[];
 
 function arrUpdate (coreData, bool) {
 
@@ -41,9 +41,13 @@ function arrUpdate (coreData, bool) {
 		let total2014 = +coreData[areas].rural[2] + +coreData[areas].urban[2];
 		let total2050 = +coreData[areas].rural[3] + +coreData[areas].urban[3];
 
+		let urbDiff1990 = +coreData[areas].urban[1]- +coreData[areas].urban[1];
+		let urbDiff2014 = +coreData[areas].urban[2]- +coreData[areas].urban[1];
+		let urbDiff2050 = +coreData[areas].urban[3]- +coreData[areas].urban[1];
+
 		coreData[areas].total = [0, total1990, total2014, total2050];
 
-		if (bool) {allTotals.push(...coreData[areas].total)} else { afrTotals.push(...coreData[areas].total); afrUrbTotals.push(...coreData[areas].urban) };
+		if (bool) {allTotals.push(...coreData[areas].total)} else { afrTotals.push(...coreData[areas].total); afrUrbDiffs.push(...coreData[areas].urban) };
 	};
 
 };
@@ -52,7 +56,7 @@ arrUpdate(coreData, true);
 arrUpdate(africaData);
 
 const mapMax=Math.max(...allTotals), rMax=80, tranRad = rMax/mapMax;
-const afrMax = Math.max(...afrTotals), afrUrbMax = Math.max(...afrUrbTotals);
+const afrMax = Math.max(...afrTotals), afrUrbMax = Math.max(...afrUrbDiffs);
 
 
 
